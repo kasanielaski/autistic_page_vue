@@ -1,22 +1,26 @@
 <template lang="pug">
 .mock
-    | {{ mockValue }}
+    | test_app
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter, namespace } from 'vuex-class';
+// @ts-ignore
+import SoundCloudAudio from 'soundcloud-audio';
 
 const mock = namespace('mock');
 
 @Component
 export default class Mock extends Vue {
-    @mock.Action('mockAction') mockAction!: (payload: string) => void;
-
-    @mock.Getter('getMockValue') mockValue!: string;
+    @mock.Getter('getClientID') clientID!: string;
 
     created() {
-        this.mockAction('newSting');
+        const scPlayer = new SoundCloudAudio(this.clientID);
+
+        scPlayer.play({
+            streamUrl: 'https://api.soundcloud.com/tracks/344408230/stream'
+        });
     }
 }
 </script>

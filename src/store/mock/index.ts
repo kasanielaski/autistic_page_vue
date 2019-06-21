@@ -7,7 +7,8 @@ import { mutations } from './mutations';
 import { getters } from './getters';
 
 export const initialState = {
-    mockValue: 'mock'
+    mockValue: 'mock',
+    clientID: 'FvkgucGq5QyPAepKyYOUkjEQq2zLVKPb'
 };
 
 const state: IMockState = initialState;
