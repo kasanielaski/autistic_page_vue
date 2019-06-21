@@ -14,12 +14,23 @@ const mock = namespace('mock');
 @Component
 export default class Mock extends Vue {
     @mock.Getter('getClientID') clientID!: string;
+    @mock.Getter('getPlaylistUrl') playlistUrl!: string;
+
+    scPlayer: any = null;
 
     created() {
-        const scPlayer = new SoundCloudAudio(this.clientID);
+        this.scPlayer = new SoundCloudAudio(this.clientID);
 
-        scPlayer.play({
-            streamUrl: 'https://api.soundcloud.com/tracks/344408230/stream'
+        this.scPlayer.resolve(this.playlistUrl, (playlist: any) => {
+            this.scPlayer.play();
+
+            this.scPlayer.on('ended', () => {
+                this.scPlayer.next();
+            });
+        });
+
+        window.addEventListener('click', () => {
+            this.scPlayer.pause();
         });
     }
 }

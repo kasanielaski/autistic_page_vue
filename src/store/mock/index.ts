@@ -7,8 +7,8 @@ import { mutations } from './mutations';
 import { getters } from './getters';
 
 export const initialState = {
-    mockValue: 'mock',
-    clientID: 'FvkgucGq5QyPAepKyYOUkjEQq2zLVKPb'
+    clientID: 'FvkgucGq5QyPAepKyYOUkjEQq2zLVKPb',
+    playlistUrl: 'https://soundcloud.com/chilledcow/sets/lofi-hiphop'
 };
 
 const state: IMockState = initialState;
