@@ -1,0 +1,89 @@
+# пример компоуза
+version: '3'
+
+services:
+  nginx:
+    image: registry.hsmdev.ru/gm/webapp-public-nginx:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+    - 80:80
+    volumes:
+    - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+    - gm-network
+    depends_on:
+    - webapp-public
+
+  webapp-public:
+    image: registry.hsmdev.ru/gm/webapp-public:dev
+    build: .
+    volumes:
+    - .:/app/
+    - /app/node_modules # using dir from container
+    networks:
+    - gm-network
+    environment:
+    - PORT=8100
+    - NODE_ENV=dev
+    - API_URL=${API_URL:-http://graphql/}
+    - API_URL_FE=${API_URL:-http://graphql/}
+
+  graphql:
+    image: registry.hsmdev.ru/gm/service-graphql
+    ports:
+    - 4000:80
+    environment:
+    - NODE_ENV=dev
+    - GM_API_BASE_URL=http://api-nginx
+    - PORT=80
+    networks:
+    - gm-network
+
+  api-nginx:
+    image: registry.hsmdev.ru/gm/core-api-nginx:latest
+    ports:
+    - 8082:80
+    networks:
+    - gm-network
+    - gm-api-network
+    depends_on:
+    - api-php
+
+  api-php:
+    image: registry.hsmdev.ru/gm/core-api-php-fpm:latest
+    environment:
+    - PROJECT_ENV=development
+    - POSTGRES_DSN=postgresql://gm-api:123123@postgres:5432/core-api
+    - POSTGRES_USER=gm-api
+    - POSTGRES_PASS=123123
+    - MEMCACHED_HOST=memcached
+    - XDEBUG_CONFIG=idekey=PHPSTORM
+    - AUTH_SHARED_KEY=RibNVAk6uil1wsmpIcrYrGtOAPEsgSRp
+    depends_on:
+    - postgres
+    networks:
+    - gm-api-network
+
+  postgres:
+    image: registry.hsmdev.ru/gm/core-api-postgres:data-latest
+    ports:
+    - 5432:5432
+    volumes:
+    - postgres-core-api:/var/lib/postgresql/data/pgdata
+    environment:
+    - PGDATA=/var/lib/postgresql/data/pgdata
+    - POSTGRES_PASSWORD=123123
+    - POSTGRES_DB=core-api
+    - POSTGRES_USER=gm-api
+    networks:
+    - gm-api-network
+
+volumes:
+  postgres-core-api:
+  webapp-dist: # share dist folder between webapp and ngnix
+
+networks:
+  gm-network:
+  gm-api-network:
