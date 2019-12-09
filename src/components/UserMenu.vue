@@ -1,11 +1,18 @@
 <template lang="pug">
-.user-menu
+CvHeader.user-menu
+    | usermenu
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+// @ts-ignore
+import { CvHeader } from '@carbon/vue';
 
-@Component
+@Component({
+    components: {
+        CvHeader
+    }
+})
 export default class UserMenu extends Vue {}
 </script>
 

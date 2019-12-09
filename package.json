@@ -12,7 +12,9 @@
         "test:unit": "vue-cli-service test:unit"
     },
     "dependencies": {
+        "@carbon/vue": "^2.19.0",
         "axios": "^0.19.0",
+        "carbon-components": "^10.7.4",
         "core-js": "^2.6.5",
         "vue": "^2.6.6",
         "vue-class-component": "^6.0.0",

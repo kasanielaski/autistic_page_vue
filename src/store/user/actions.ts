@@ -2,8 +2,7 @@ import { ActionTree } from 'vuex';
 import httpClient from '../httpClient';
 
 import { IRootState } from '../types';
-import { IUserState, UserT } from './types';
-import { IResponseData } from '@/types';
+import { IUserState } from './types';
 import { AxiosError } from 'axios';
 
 export const actions: ActionTree<IUserState, IRootState> = {
@@ -21,7 +20,7 @@ export const actions: ActionTree<IUserState, IRootState> = {
                 },
                 id: 1
             })
-            .then(({ data }: { data: IResponseData<UserT> }) => {
+            .then(({ data }: { data: any }) => {
                 if (typeof data.result === 'string') {
                     commit('setError', data.result);
                     dispatch('error/setError', new Error(data.result), {
