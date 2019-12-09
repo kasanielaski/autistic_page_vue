@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+    # fe app
+    client:
+        build: '../ride_arm_app'
+        command:
+            - 'yarn'
+            - 'serve'
+        volumes:
+            - '../ride_arm_app:/app/fe'
+        ports:
+            - '8080:8080'
+        network_mode: host
+        depends_on:
+            - 'server'

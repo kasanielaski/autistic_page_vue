@@ -1,12 +1,12 @@
 <template lang="pug">
-.app
-    router-view.app__router
+.user-menu
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Action, Getter, namespace } from 'vuex-class';
 
 @Component
-export default class App extends Vue {}
+export default class UserMenu extends Vue {}
 </script>
+
+<style lang="scss" scoped></style>
